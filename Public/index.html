@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Post Office Details</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <h1>Post Office Details</h1>
+
+  <!-- Admin Login Button -->
+  <button id="showLoginButton" onclick="showLoginForm()">Admin Login</button>
+
+  <!-- Admin Login Form (Hidden by Default) -->
+  <div id="loginForm" style="display: none;">
+    <h2>Admin Login</h2>
+    <form id="loginFormContent">
+      <label for="username">Username:</label>
+      <input type="text" id="username" required><br><br>
+      <label for="password">Password:</label>
+      <input type="password" id="password" required><br><br>
+      <button type="submit">Login</button>
+    </form>
+  </div>
+
+  <!-- Logout Button (Hidden by Default) -->
+  <button id="logoutButton" style="display: none;" onclick="logout()">Logout</button>
+
+  <!-- Search Bar -->
+  <input type="text" id="search" placeholder="Search by any detail..." oninput="filterTable()">
+
+  <!-- Table to Display Data -->
+  <table id="postOfficeTable">
+    <thead>
+      <tr>
+        <th>Office Name</th>
+        <th>Control Office</th>
+        <th>Number of Sub Post Offices</th>
+        <th>Delivery State</th>
+        <th>DPMG Area</th>
+        <th>DS Area</th>
+        <th>Postal Code</th>
+        <th>Phone Number</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Data will be populated by JavaScript -->
+    </tbody>
+  </table>
+
+  <!-- Report Wrong Details Form -->
+  <div id="reportForm" style="display: none;">
+    <h2>Report Wrong Details</h2>
+    <form id="reportFormContent">
+      <label for="currentDetails">Current Details:</label>
+      <textarea id="currentDetails" readonly></textarea><br><br>
+      <label for="suggestedChanges">Suggested Changes:</label>
+      <textarea id="suggestedChanges" required></textarea><br><br>
+      <button type="submit">Submit Report</button>
+    </form>
+  </div>
+
+  <!-- Admin Features (Hidden by Default) -->
+  <div id="adminFeatures" style="display: none;">
+    <h2>Admin Features</h2>
+    <input type="file" id="excelUpload" accept=".xlsx, .xls" style="display: none;">
+    <button onclick="document.getElementById('excelUpload').click()">Upload Excel</button>
+    <button onclick="editData()">Edit Data</button>
+  </div>
+
+  <!-- Include XLSX library -->
+  <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+  <script src="data.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
