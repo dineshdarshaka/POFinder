@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Office Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Post Office Details</h1>
+    <table id="postOfficeTable">
+        <thead>
+            <tr>
+                <th>Office Name</th>
+                <th>Controlling Office</th>
+                <th>Number of SPO</th>
+                <th>DPMG Area</th>
+                <th>DS Area</th>
+                <th>Delivery/Non-Delivery</th>
+                <th>Phone Numbers</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Data will be populated here by JavaScript -->
+        </tbody>
+    </table>
+
+    <script>
+        // Fetch the JSON file
+        fetch('po & spo delivery non delivery and contact no.json')
+            .then(response => response.json())
+            .then(data => {
+                const tableBody = document.querySelector('#postOfficeTable tbody');
+                data.Main.forEach(office => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${office['Office Name'] || 'N/A'}</td>
+                        <td>${office['controlling Office'] === 0 ? 'Post Office' : office['controlling Office'] || 'N/A'}</td>
+                        <td>${office['Number of SPO'] || 'N/A'}</td>
+                        <td>${office.DPMG || 'N/A'}</td>
+                        <td>${office.DS || 'N/A'}</td>
+                        <td>${office['Delivery / Non Delivery'] || 'N/A'}</td>
+                        <td>${office['Te. No'] || 'N/A'}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            })
+            .catch(error => console.error('Error fetching JSON:', error));
+    </script>
+</body>
+</html>
