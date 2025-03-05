@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Office Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        #notification {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 10px;
+            border: 1px solid #f5c6cb;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        #searchBox {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Post Office Details</h1>
+
+    <!-- Notification -->
+    <div id="notification">
+        Please send an email to <a href="mailto:ddarshaka1@gmail.com">ddarshaka1@gmail.com</a> for information correction.
+    </div>
+
+    <!-- Search Box -->
+    <input type="text" id="searchBox" placeholder="Search by Office Name, Controlling Office, Postal Code, or Phone Numbers...">
+
+    <!-- Table -->
+    <table id="postOfficeTable">
+        <thead>
+            <tr>
+                <th>Office Name</th>
+                <th>Controlling Office</th>
+                <th>Number of SPO</th>
+                <th>DPMG Area</th>
+                <th>DS Area</th>
+                <th>Postal Code</th>
+                <th>Delivery/Non-Delivery</th>
+                <th>Phone Numbers</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Data will be populated here by JavaScript -->
+        </tbody>
+    </table>
+
+    <script>
+        // Fetch the JSON file
+        fetch('data.json')
+            .then(response => response.json())
+            .then(data => {
+                const tableBody = document.querySelector('#postOfficeTable tbody');
+                const searchBox = document.getElementById('searchBox');
+
+                // Function to populate the table
+                function populateTable(filterText = '') {
+                    tableBody.innerHTML = ''; // Clear existing rows
+                    data.Main.forEach(office => {
+                        const officeName = office['Office Name'] || '';
+                        const controllingOffice = office['controlling Office'] === 0 ? 'Post Office' : office['controlling Office'] || '';
+                        const postalCode = office['PO Code'] || '';
+                        const phoneNumbers = office['Te. No'] || '';
+
+                        // Check if the row matches the search text
+                        if (
+                            officeName.toLowerCase().includes(filterText.toLowerCase()) ||
+                            controllingOffice.toLowerCase().includes(filterText.toLowerCase()) ||
+                            postalCode.toLowerCase().includes(filterText.toLowerCase()) ||
+                            phoneNumbers.toLowerCase().includes(filterText.toLowerCase())
+                        ) {
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                                <td>${officeName}</td>
+                                <td>${controllingOffice}</td>
+                                <td>${office['Number of SPO'] || 'N/A'}</td>
+                                <td>${office.DPMG || 'N/A'}</td>
+                                <td>${office.DS || 'N/A'}</td>
+                                <td>${postalCode}</td>
+                                <td>${office['Delivery / Non Delivery'] || 'N/A'}</td>
+                                <td>${phoneNumbers}</td>
+                            `;
+                            tableBody.appendChild(row);
+                        }
+                    });
+                }
+
+                // Populate the table initially
+                populateTable();
+
+                // Add event listener for the search box
+                searchBox.addEventListener('input', (event) => {
+                    const filterText = event.target.value.trim();
+                    populateTable(filterText);
+                });
+            })
+            .catch(error => console.error('Error fetching JSON:', error));
+    </script>
+</body>
+</html>
